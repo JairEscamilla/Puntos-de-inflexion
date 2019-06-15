@@ -58,6 +58,7 @@ class Interfaz(FloatLayout):
     ddx = ""
     soluciones = []
     pInflexiones = []
+    coordenadas = []
     def recibirFuncion(self, funcion): # Recibimos la funcion ingresada por el usuario
         app = App.get_running_app()
         app.funcion = funcion # Obteniendo la funcion
@@ -70,6 +71,7 @@ class Interfaz(FloatLayout):
         self.segundaDerivada()
         self.resolverEcuacion()
         self.evaluarIntervalos()
+        self.coordenadasPInflexion()
     
     def reescribirFuncion(self, funcion): # Método para reescribir la funcion a manera de que sea entendible para Sympy
         self.fx = "" # Limpio la variable de clase
@@ -131,6 +133,19 @@ class Interfaz(FloatLayout):
                     self.pInflexiones.append(i)
         print("Puntos de inflexión: ")
         print(self.pInflexiones)
+    
+    def coordenadasPInflexion(self):
+        self.coordenadas = []
+        if self.pInflexiones != []:
+            x = Symbol('x')
+            for i in self.pInflexiones:
+                self.coordenadas.append(i)
+                self.coordenadas.append(sympify(self.fx).subs(x, i))
+        
+        print("Las coordenadas de los puntos de inflexión son: ")
+        print(self.coordenadas)
+
+
 
 class Pinf(App):
     def build(self):
