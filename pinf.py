@@ -108,7 +108,7 @@ class Interfaz(FloatLayout):
         for i in self.soluciones: # Imprimiendo las soluciones encontradas al resolver la ecuacion
             print(i)
     
-    def evaluarIntervalos(self):
+    def evaluarIntervalos(self): # Evaluamos los intervalos para obtener los valores de x que cumplen con los requisitos de ser un punto de inflexión
         realSolutions = []
         self.pInflexiones = []
         type = 0
@@ -121,24 +121,23 @@ class Interfaz(FloatLayout):
         if self.soluciones == [] or realSolutions == []: # Evaluamos que existan posibles soluciones
             print("No hay puntos de inflexión")
         else:
-            print("Resultados: ")
-            for i in realSolutions:
+            for i in realSolutions:  # Evaluamos los resultados reales para obtener las concavidades de la funcion
                 res = sympify(self.ddx).subs(x, i-0.05)
                 res2 = sympify(self.ddx).subs(x, i+0.05)
-                if res < 0 or res2 < 0:
+                if res < 0 or res2 < 0: # En caso de que la evaluacion de la segunda derivada sea negativa, la funcion es concava en este punto
                     type = 1
-                if res > 0 or res2 > 0:
+                if res > 0 or res2 > 0:  # En caso de que la evaluacion de la segunda derivada sea negativa, la funcion es convexa en este punto
                     type2 = 2             
                 if (type == 1 and type2 == 2) or (type == 2 and type2 == 1):
                     self.pInflexiones.append(i)
-        print("Puntos de inflexión: ")
+        print("Puntos de inflexión: ") # Imprimiendo los valores de x que son puntos de inflexión
         print(self.pInflexiones)
     
-    def coordenadasPInflexion(self):
+    def coordenadasPInflexion(self): # Obtenemos las coordenadas de los puntos de inflexión al evaluar las coordenas en x
         self.coordenadas = []
-        if self.pInflexiones != []:
+        if self.pInflexiones != []: # En caso de que no este vacia la lista, podemos calcular la coordenada en y
             x = Symbol('x')
-            for i in self.pInflexiones:
+            for i in self.pInflexiones: # Hacemos las evaluaciones en cada punto de x que se ha obtenido un punto de inflexión
                 self.coordenadas.append(i)
                 self.coordenadas.append(sympify(self.fx).subs(x, i))
         
