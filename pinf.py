@@ -1,3 +1,4 @@
+# IMPORTANDO TODOS LOS COMPONENTES GRAFICOS PARA LA INTERFAZ
 import kivy 
 kivy.require('1.10.0')
 from kivy.app import App
@@ -8,12 +9,13 @@ from kivy.config import Config
 from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
 
-Config.set('graphics', 'width', '400')
-Config.set('graphics', 'height', '400')
+# CONFIGURANDO EL TAMAÑO DE LA VENTANA
+Config.set('graphics', 'width', '400') # Configurando el ancho
+Config.set('graphics', 'height', '400') # Configurando el ancho
 Config.write()
 
-
-Builder.load_string("""
+# AGREGANDO LOS COMPONENTES GRAFICOS A LA INTERFAZ
+Builder.load_string(""" 
 <Interfaz>:
     BoxLayout:
         id: index
@@ -41,18 +43,20 @@ Builder.load_string("""
             on_press: root.recibirFuncion(funcion.text)
 """)
 
+# CLASE PARA LA LOGICA DE LA APLICACION
 class Interfaz(FloatLayout):
-    def recibirFuncion(self, funcion):
+    def recibirFuncion(self, funcion): # Recibimos la funcion ingresada por el usuario
         app = App.get_running_app()
-        app.funcion = funcion 
+        app.funcion = funcion # Obteniendo la funcion
         print("Entrando en sistema, imprimiendo funcion: ")
         print(app.funcion)
+    
 
 
-class Fismat(App):
+class Pinf(App):
     def build(self):
         return Interfaz()
     
 
 if __name__ == "__main__":
-    Fismat().run()
+    Pinf().run()
