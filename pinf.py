@@ -53,14 +53,18 @@ class Interfaz(FloatLayout):
         self.reescribirFuncion(app.funcion)
         print("Entrando en sistema, imprimiendo funcion: ")
         print(app.funcion)
+        print(self.fx)
     
     def reescribirFuncion(self, funcion):
+        self.fx = ""
         auxiliar = []
         for i in range(len(funcion)-1):
             auxiliar.append(funcion[i])
             if((funcion[i] >= '1' and funcion[i] <= '9') and (funcion[i+1] == 'x')):
                 auxiliar.append('*')
-        print(auxiliar)
+        auxiliar.append(funcion[len(funcion)-1])
+        for i in auxiliar:
+            self.fx+= i
 
 
 class Pinf(App):
