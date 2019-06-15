@@ -1,5 +1,6 @@
 # IMPORTANDO TODOS LOS COMPONENTES GRAFICOS PARA LA INTERFAZ
 import kivy 
+from decimal import Decimal
 kivy.require('1.10.0')
 from kivy.app import App
 from kivy.uix.button import Label
@@ -14,7 +15,7 @@ from sympy import Derivative, diff, simplify, Symbol, Eq, solve, im, sympify
 from sympy.interactive import printing
 
 # imprimir con notación matemática.
-printing.init_printing(use_latex='mathjax')
+#printing.init_printing(use_latex='mathjax')
 
 # CONFIGURANDO EL TAMAÑO DE LA VENTANA
 Config.set('graphics', 'width', '400') # Configurando el ancho
@@ -86,14 +87,14 @@ class Interfaz(FloatLayout):
             self.fx+= i
 
     def derivarFuncion(self): # Calculando la primer derivada de la función
-        printing.init_printing(use_latex='mathjax')
+        #printing.init_printing(use_latex='mathjax')
         x = Symbol('x')
         self.dx = Derivative(self.fx, x).doit()
         simplify(self.dx)
         print(self.dx)
     
     def segundaDerivada(self): # Calculando la segunda derivada de la función
-        printing.init_printing(use_latex='mathjax')
+        #printing.init_printing(use_latex='mathjax')
         x = Symbol('x')
         self.ddx = Derivative(self.dx, x).doit()
         simplify(self.ddx)
@@ -138,8 +139,8 @@ class Interfaz(FloatLayout):
         if self.pInflexiones != []: # En caso de que no este vacia la lista, podemos calcular la coordenada en y
             x = Symbol('x')
             for i in self.pInflexiones: # Hacemos las evaluaciones en cada punto de x que se ha obtenido un punto de inflexión
-                self.coordenadas.append(i)
-                self.coordenadas.append(sympify(self.fx).subs(x, i))
+                self.coordenadas.append(i.evalf())
+                self.coordenadas.append(sympify(self.fx).subs(x, i).evalf())
         
         print("Las coordenadas de los puntos de inflexión son: ")
         print(self.coordenadas)
