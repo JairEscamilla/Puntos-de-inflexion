@@ -55,15 +55,16 @@ class Interfaz(FloatLayout):
         print(app.funcion)
         print(self.fx)
     
-    def reescribirFuncion(self, funcion):
-        self.fx = ""
-        auxiliar = []
-        for i in range(len(funcion)-1):
-            auxiliar.append(funcion[i])
-            if((funcion[i] >= '1' and funcion[i] <= '9') and (funcion[i+1] == 'x')):
+    def reescribirFuncion(self, funcion): # Método para reescribir la funcion a manera de que sea entendible para Sympy
+        self.fx = "" # Limpio la variable de clase
+        auxiliar = [] 
+        for i in range(len(funcion)-1): # Recorremos la funcion caracter a caracter
+            auxiliar.append(funcion[i]) # Agregamos los caracteres a la variable auxiliar
+            if((funcion[i] >= '1' and funcion[i] <= '9') and (funcion[i+1] == 'x')): # En caso de que encontremos un numero junto a una literal, se agrega el caracter *
                 auxiliar.append('*')
         auxiliar.append(funcion[len(funcion)-1])
-        for i in auxiliar:
+        
+        for i in auxiliar: # Pasamos el valor de la variable auxiliar a la variable de instancia
             self.fx+= i
 
 
