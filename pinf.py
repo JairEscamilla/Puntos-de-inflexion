@@ -9,6 +9,13 @@ from kivy.config import Config
 from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
 
+# IMPORTANDO SYMPY
+from sympy import Derivative, diff, simplify, Symbol
+from sympy.interactive import printing
+
+# imprimir con notación matemática.
+printing.init_printing(use_latex='mathjax')
+
 # CONFIGURANDO EL TAMAÑO DE LA VENTANA
 Config.set('graphics', 'width', '400') # Configurando el ancho
 Config.set('graphics', 'height', '400') # Configurando el ancho
@@ -47,13 +54,18 @@ Builder.load_string("""
 class Interfaz(FloatLayout):
     # Variables de clase
     fx = ""
+    dx = ""
+    ddx = ""
     def recibirFuncion(self, funcion): # Recibimos la funcion ingresada por el usuario
         app = App.get_running_app()
         app.funcion = funcion # Obteniendo la funcion
         self.reescribirFuncion(app.funcion)
-        print("Entrando en sistema, imprimiendo funcion: ")
-        print(app.funcion)
+        print("Imprimiendo funcion: ")
         print(self.fx)
+        print("Derivada de la función: ")
+        self.derivarFuncion()
+        print("Segunda derivada de la función: ")
+        self.segundaDerivada()
     
     def reescribirFuncion(self, funcion): # Método para reescribir la funcion a manera de que sea entendible para Sympy
         self.fx = "" # Limpio la variable de clase
@@ -67,6 +79,19 @@ class Interfaz(FloatLayout):
         for i in auxiliar: # Pasamos el valor de la variable auxiliar a la variable de instancia
             self.fx+= i
 
+    def derivarFuncion(self): # Calculando la primer derivada de la función
+        printing.init_printing(use_latex='mathjax')
+        x = Symbol('x')
+        self.dx = Derivative(self.fx, x).doit()
+        simplify(self.dx)
+        print(self.dx)
+    
+    def segundaDerivada(self): # Calculando la segunda derivada de la función
+        printing.init_printing(use_latex='mathjax')
+        x = Symbol('x')
+        self.ddx = Derivative(self.dx, x).doit()
+        simplify(self.ddx)
+        print(self.ddx)
 
 class Pinf(App):
     def build(self):
