@@ -45,12 +45,22 @@ Builder.load_string("""
 
 # CLASE PARA LA LOGICA DE LA APLICACION
 class Interfaz(FloatLayout):
+    # Variables de clase
+    fx = ""
     def recibirFuncion(self, funcion): # Recibimos la funcion ingresada por el usuario
         app = App.get_running_app()
         app.funcion = funcion # Obteniendo la funcion
+        self.reescribirFuncion(app.funcion)
         print("Entrando en sistema, imprimiendo funcion: ")
         print(app.funcion)
     
+    def reescribirFuncion(self, funcion):
+        auxiliar = []
+        for i in range(len(funcion)-1):
+            auxiliar.append(funcion[i])
+            if((funcion[i] >= '1' and funcion[i] <= '9') and (funcion[i+1] == 'x')):
+                auxiliar.append('*')
+        print(auxiliar)
 
 
 class Pinf(App):
