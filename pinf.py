@@ -10,7 +10,7 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
 
 # IMPORTANDO SYMPY
-from sympy import Derivative, diff, simplify, Symbol, Eq, solve
+from sympy import Derivative, diff, simplify, Symbol, Eq, solve, im, sympify
 from sympy.interactive import printing
 
 # imprimir con notación matemática.
@@ -57,6 +57,7 @@ class Interfaz(FloatLayout):
     dx = ""
     ddx = ""
     soluciones = []
+    pInflexiones = []
     def recibirFuncion(self, funcion): # Recibimos la funcion ingresada por el usuario
         app = App.get_running_app()
         app.funcion = funcion # Obteniendo la funcion
@@ -68,13 +69,14 @@ class Interfaz(FloatLayout):
         print("Segunda derivada de la función: ")
         self.segundaDerivada()
         self.resolverEcuacion()
+        self.evaluarIntervalos()
     
     def reescribirFuncion(self, funcion): # Método para reescribir la funcion a manera de que sea entendible para Sympy
         self.fx = "" # Limpio la variable de clase
         auxiliar = [] 
         for i in range(len(funcion)-1): # Recorremos la funcion caracter a caracter
             auxiliar.append(funcion[i]) # Agregamos los caracteres a la variable auxiliar
-            if((funcion[i] >= '1' and funcion[i] <= '9') and (funcion[i+1] == 'x')): # En caso de que encontremos un numero junto a una literal, se agrega el caracter *
+            if((funcion[i] >= '0' and funcion[i] <= '9') and (funcion[i+1] == 'x')): # En caso de que encontremos un numero junto a una literal, se agrega el caracter *
                 auxiliar.append('*')
         auxiliar.append(funcion[len(funcion)-1])
         
@@ -96,12 +98,39 @@ class Interfaz(FloatLayout):
         print(self.ddx)
 
     def resolverEcuacion(self): # Resolviendo las ecuaciones de la segunda derivada
+        self.soluciones = []
         ecuacion = Eq(self.ddx, 0)
         x = Symbol('x')
         self.soluciones = solve(ecuacion, x)
         print("Soluciones de las ecuaciones: ")
         for i in self.soluciones: # Imprimiendo las soluciones encontradas al resolver la ecuacion
             print(i)
+    
+    def evaluarIntervalos(self):
+        realSolutions = []
+        self.pInflexiones = []
+        type = 0
+        type2 = 0
+        x = Symbol('x')
+        for i in self.soluciones: # Evaluamos que tampoco existan soluciones imaginarias
+            imgPart = im(i)
+            if imgPart == 0:
+                realSolutions.append(i)
+        if self.soluciones == [] or realSolutions == []: # Evaluamos que existan posibles soluciones
+            print("No hay puntos de inflexión")
+        else:
+            print("Resultados: ")
+            for i in realSolutions:
+                res = sympify(self.ddx).subs(x, i-0.05)
+                res2 = sympify(self.ddx).subs(x, i+0.05)
+                if res < 0 or res2 < 0:
+                    type = 1
+                if res > 0 or res2 > 0:
+                    type2 = 2             
+                if (type == 1 and type2 == 2) or (type == 2 and type2 == 1):
+                    self.pInflexiones.append(i)
+        print("Puntos de inflexión: ")
+        print(self.pInflexiones)
 
 class Pinf(App):
     def build(self):
