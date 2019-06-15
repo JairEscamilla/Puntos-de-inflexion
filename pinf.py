@@ -10,7 +10,7 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
 
 # IMPORTANDO SYMPY
-from sympy import Derivative, diff, simplify, Symbol
+from sympy import Derivative, diff, simplify, Symbol, Eq, solve
 from sympy.interactive import printing
 
 # imprimir con notación matemática.
@@ -56,6 +56,7 @@ class Interfaz(FloatLayout):
     fx = ""
     dx = ""
     ddx = ""
+    soluciones = []
     def recibirFuncion(self, funcion): # Recibimos la funcion ingresada por el usuario
         app = App.get_running_app()
         app.funcion = funcion # Obteniendo la funcion
@@ -66,6 +67,7 @@ class Interfaz(FloatLayout):
         self.derivarFuncion()
         print("Segunda derivada de la función: ")
         self.segundaDerivada()
+        self.resolverEcuacion()
     
     def reescribirFuncion(self, funcion): # Método para reescribir la funcion a manera de que sea entendible para Sympy
         self.fx = "" # Limpio la variable de clase
@@ -92,6 +94,14 @@ class Interfaz(FloatLayout):
         self.ddx = Derivative(self.dx, x).doit()
         simplify(self.ddx)
         print(self.ddx)
+
+    def resolverEcuacion(self):
+        ecuacion = Eq(self.ddx, 0)
+        x = Symbol('x')
+        self.soluciones = solve(ecuacion, x)
+        print("Soluciones de las ecuaciones: ")
+        for i in self.soluciones:
+            print(i)
 
 class Pinf(App):
     def build(self):
