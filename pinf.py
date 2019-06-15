@@ -95,12 +95,12 @@ class Interfaz(FloatLayout):
         simplify(self.ddx)
         print(self.ddx)
 
-    def resolverEcuacion(self):
+    def resolverEcuacion(self): # Resolviendo las ecuaciones de la segunda derivada
         ecuacion = Eq(self.ddx, 0)
         x = Symbol('x')
         self.soluciones = solve(ecuacion, x)
         print("Soluciones de las ecuaciones: ")
-        for i in self.soluciones:
+        for i in self.soluciones: # Imprimiendo las soluciones encontradas al resolver la ecuacion
             print(i)
 
 class Pinf(App):
