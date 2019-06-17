@@ -13,7 +13,7 @@ from kivy.lang import Builder
 # IMPORTANDO SYMPY
 from sympy import Derivative, diff, simplify, Symbol, Eq, solve, im, sympify
 from sympy.interactive import printing
-
+from sympy.plotting import plot   
 # imprimir con notación matemática.
 #printing.init_printing(use_latex='mathjax')
 
@@ -73,6 +73,7 @@ class Interfaz(FloatLayout):
         self.resolverEcuacion()
         self.evaluarIntervalos()
         self.coordenadasPInflexion()
+        self.graficarFuncion()
     
     def reescribirFuncion(self, funcion): # Método para reescribir la funcion a manera de que sea entendible para Sympy
         self.fx = "" # Limpio la variable de clase
@@ -145,6 +146,9 @@ class Interfaz(FloatLayout):
         print("Las coordenadas de los puntos de inflexión son: ")
         print(self.coordenadas)
 
+    def graficarFuncion(self):
+        p1 = plot(self.fx)
+        p1.show()
 
 
 class Pinf(App):
