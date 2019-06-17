@@ -148,7 +148,7 @@ class Interfaz(FloatLayout):
         print(self.coordenadas)
 
     def graficarFuncion(self):
-        vt = arange(-50, 50, 0.01)
+        vt = arange(-2, 2, 0.1)
         x = Symbol('x')
         vx1 = zeros(len(vt))
         vx2 = zeros(len(vt))
@@ -156,7 +156,11 @@ class Interfaz(FloatLayout):
             vx1[i] = sympify(self.fx).subs(x, vt[i])
         plt.title("f(x)= "+self.fx+"\n")
         plt.plot(vt, vx1, "r")
-        plt.scatter(0, 0, marker = 'X', label = "Hola")
+        #plt.scatter(0, 0, marker = 'X', label = "Hola")
+        k = 0
+        for i in range(int((len(self.coordenadas))/2)):
+            plt.scatter(self.coordenadas[k], self.coordenadas[k+1], marker= "X")
+            k+= 2
         plt.show()
 
 
