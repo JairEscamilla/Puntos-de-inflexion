@@ -11,12 +11,13 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
 
 # IMPORTANDO SYMPY
-from sympy import Derivative, diff, simplify, Symbol, Eq, solve, im, sympify
+from sympy import Derivative, diff, simplify, Symbol, Eq, solve, im, sympify, N
 from sympy.interactive import printing
 from sympy.plotting import plot   
 # imprimir con notación matemática.
 #printing.init_printing(use_latex='mathjax')
-
+import matplotlib.pyplot as plt
+from numpy import linspace, arange, zeros
 # CONFIGURANDO EL TAMAÑO DE LA VENTANA
 Config.set('graphics', 'width', '400') # Configurando el ancho
 Config.set('graphics', 'height', '400') # Configurando el ancho
@@ -147,11 +148,16 @@ class Interfaz(FloatLayout):
         print(self.coordenadas)
 
     def graficarFuncion(self):
-        printing.init_printing(use_latex='mathjax')
+        vt = arange(-50, 50, 0.01)
         x = Symbol('x')
-        y = Symbol('y')
-        p1 = plot(self.fx, (x, -50, 50), show = False, title = "f(x)="+self.fx+"\n")
-        p1.show()
+        vx1 = zeros(len(vt))
+        vx2 = zeros(len(vt))
+        for i in range(0, len(vt)):
+            vx1[i] = sympify(self.fx).subs(x, vt[i])
+        plt.title("f(x)= "+self.fx+"\n")
+        plt.plot(vt, vx1, "r")
+        plt.scatter(0, 0, marker = 'X', label = "Hola")
+        plt.show()
 
 
 class Pinf(App):
