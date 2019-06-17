@@ -147,7 +147,10 @@ class Interfaz(FloatLayout):
         print(self.coordenadas)
 
     def graficarFuncion(self):
-        p1 = plot(self.fx)
+        printing.init_printing(use_latex='mathjax')
+        x = Symbol('x')
+        y = Symbol('y')
+        p1 = plot(self.fx, (x, -50, 50), show = False, title = "f(x)="+self.fx+"\n")
         p1.show()
 
 
