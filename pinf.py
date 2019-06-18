@@ -148,7 +148,7 @@ class Interfaz(FloatLayout):
         print(self.coordenadas)
 
     def graficarFuncion(self):
-        vt = arange(-2, 2, 0.1)
+        vt = arange(min(self.pInflexiones)-20, max(self.pInflexiones)+20, 0.1)
         x = Symbol('x')
         vx1 = zeros(len(vt))
         vx2 = zeros(len(vt))
