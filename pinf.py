@@ -181,24 +181,24 @@ class Interfaz(FloatLayout):
             k+= 2
         plt.show()
     def guardarEnArchivo(self):
-        matriz = []
+        matriz = [] # Genero un arreglo
         j = 0
         for i in range(int((len(self.coordenadas))/2)): # Separando en una matriz las coordenadas de los puntos de inflexion
-            matriz.append([])
+            matriz.append([]) # A cada posicion del arreglo se le añade un vector como elemento
             matriz[i].append(self.coordenadas[j])
             matriz[i].append(self.coordenadas[j+1])
             j += 2
-        iden = open("pinflexion.csv", "w") 
+        iden = open("pinflexion.csv", "w") # Identificador para escribir en archivo csv
         escribir = csv.writer(iden)
-        renglon = ["Puntos de inflexión de f(x) = ", self.funcion]
+        renglon = ["Puntos de inflexión de f(x) = ", self.funcion] # Escribo los renglones necesarios en el archivo csv
         escribir.writerow(renglon)
         renglon = ["x", "y"]
         escribir.writerow(renglon)
-        for renglon in matriz:
+        for renglon in matriz: # Recorro la matriz para escribir sus filas
             escribir.writerow(renglon)
-        iden.close()
-        mensaje = Mensaje()
-        mensaje.open()
+        iden.close() # Cerrando el archivo
+        mensaje = Mensaje() # Instancia de un nuevo mensaje en pantalla
+        mensaje.open() # Mostrando el mensaje en pantalla
 
 class Mensaje(Popup):
     pass
