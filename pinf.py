@@ -1,4 +1,5 @@
 # IMPORTANDO TODOS LOS COMPONENTES GRAFICOS PARA LA INTERFAZ
+import sys
 import kivy 
 from decimal import Decimal
 kivy.require('1.10.0')
@@ -10,6 +11,7 @@ from kivy.config import Config
 from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
 
+sys.setrecursionlimit(5000)
 # IMPORTANDO SYMPY
 from sympy import Derivative, diff, simplify, Symbol, Eq, solve, im, sympify, N
 from sympy.interactive import printing
@@ -148,7 +150,10 @@ class Interfaz(FloatLayout):
         print(self.coordenadas)
 
     def graficarFuncion(self):
-        vt = arange(min(self.pInflexiones)-20, max(self.pInflexiones)+20, 0.1)
+        if self.pInflexiones != []:
+            vt = arange(min(self.pInflexiones)-20, max(self.pInflexiones)+20, 0.1)
+        else:
+            vt = arange(-10, 10)
         x = Symbol('x')
         vx1 = zeros(len(vt))
         vx2 = zeros(len(vt))
