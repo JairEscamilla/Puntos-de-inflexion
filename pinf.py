@@ -50,10 +50,21 @@ Builder.load_string("""
                 multiline: True
                 halign: "left"
                 font_size: 15
+        BoxLayout:
+            orientation: "vertical"
+            Label:
+                text: "Nombre del archivo sin extensión: "
+                font_size: 22
+                text_size: root.width-30, 30
+            TextInput:
+                id: archivo
+                multiline: True
+                halign: "left"
+                font_size: 15
         Button:
             text: "Calcular puntos de inflexión"
             font_size: 22
-            on_press: root.recibirFuncion(funcion.text)
+            on_press: root.recibirFuncion(funcion.text, archivo.text)
 <Mensaje>:
     size_hint: .8, .8
     auto_dismiss: False
@@ -67,16 +78,18 @@ Builder.load_string("""
 class Interfaz(FloatLayout):
     # Variables de clase
     fx = ""
+    nombreArchivo = ""
     funcion = ""
     dx = ""
     ddx = ""
     soluciones = []
     pInflexiones = []
     coordenadas = []
-    def recibirFuncion(self, funcion): # Recibimos la funcion ingresada por el usuario
+    def recibirFuncion(self, funcion, archivo): # Recibimos la funcion ingresada por el usuario
         app = App.get_running_app()
         app.funcion = funcion # Obteniendo la funcion
         self.funcion = app.funcion
+        self.nombreArchivo = archivo
         print("Funcion: "+self.funcion)
         self.reescribirFuncion(app.funcion)
         print("Imprimiendo funcion: ")
@@ -188,7 +201,8 @@ class Interfaz(FloatLayout):
             matriz[i].append(self.coordenadas[j])
             matriz[i].append(self.coordenadas[j+1])
             j += 2
-        iden = open("pinflexion.csv", "w") # Identificador para escribir en archivo csv
+        self.nombreArchivo += ".csv"
+        iden = open(self.nombreArchivo, "w") # Identificador para escribir en archivo csv
         escribir = csv.writer(iden)
         renglon = ["Puntos de inflexión de f(x) = ", self.funcion] # Escribo los renglones necesarios en el archivo csv
         escribir.writerow(renglon)
