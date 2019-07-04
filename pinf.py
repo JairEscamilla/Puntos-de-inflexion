@@ -1,6 +1,7 @@
 # IMPORTANDO TODOS LOS COMPONENTES GRAFICOS PARA LA INTERFAZ
 import sys
 import kivy 
+import csv
 from decimal import Decimal
 kivy.require('1.10.0')
 from kivy.app import App
@@ -10,6 +11,7 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.config import Config 
 from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
+from kivy.uix.popup import Popup
 
 sys.setrecursionlimit(5000)
 # IMPORTANDO SYMPY
@@ -52,12 +54,20 @@ Builder.load_string("""
             text: "Calcular puntos de inflexión"
             font_size: 22
             on_press: root.recibirFuncion(funcion.text)
+<Mensaje>:
+    size_hint: .8, .8
+    auto_dismiss: False
+    title: 'Puntos de inflexión'
+    Button:
+        text: 'Los puntos de inflexión han guardados'
+        on_press: root.dismiss()
 """)
 
 # CLASE PARA LA LOGICA DE LA APLICACION
 class Interfaz(FloatLayout):
     # Variables de clase
     fx = ""
+    funcion = ""
     dx = ""
     ddx = ""
     soluciones = []
@@ -66,6 +76,8 @@ class Interfaz(FloatLayout):
     def recibirFuncion(self, funcion): # Recibimos la funcion ingresada por el usuario
         app = App.get_running_app()
         app.funcion = funcion # Obteniendo la funcion
+        self.funcion = app.funcion
+        print("Funcion: "+self.funcion)
         self.reescribirFuncion(app.funcion)
         print("Imprimiendo funcion: ")
         print(self.fx)
@@ -77,6 +89,7 @@ class Interfaz(FloatLayout):
         self.evaluarIntervalos()
         self.coordenadasPInflexion()
         self.graficarFuncion()
+        self.guardarEnArchivo()
     
     def reescribirFuncion(self, funcion): # Método para reescribir la funcion a manera de que sea entendible para Sympy
         self.fx = "" # Limpio la variable de clase
@@ -159,7 +172,7 @@ class Interfaz(FloatLayout):
         vx2 = zeros(len(vt))
         for i in range(0, len(vt)):
             vx1[i] = sympify(self.fx).subs(x, vt[i])
-        plt.title("f(x)= "+self.fx+"\n")
+        plt.title("f(x)= "+self.funcion+"\n")
         plt.plot(vt, vx1, "r")
         #plt.scatter(0, 0, marker = 'X', label = "Hola")
         k = 0
@@ -167,8 +180,28 @@ class Interfaz(FloatLayout):
             plt.scatter(self.coordenadas[k], self.coordenadas[k+1], marker= "X")
             k+= 2
         plt.show()
+    def guardarEnArchivo(self):
+        matriz = []
+        j = 0
+        for i in range(int((len(self.coordenadas))/2)): # Separando en una matriz las coordenadas de los puntos de inflexion
+            matriz.append([])
+            matriz[i].append(self.coordenadas[j])
+            matriz[i].append(self.coordenadas[j+1])
+            j += 2
+        iden = open("pinflexion.csv", "w") 
+        escribir = csv.writer(iden)
+        renglon = ["Puntos de inflexión de f(x) = ", self.funcion]
+        escribir.writerow(renglon)
+        renglon = ["x", "y"]
+        escribir.writerow(renglon)
+        for renglon in matriz:
+            escribir.writerow(renglon)
+        iden.close()
+        mensaje = Mensaje()
+        mensaje.open()
 
-
+class Mensaje(Popup):
+    pass
 class Pinf(App):
     def build(self):
         return Interfaz()
