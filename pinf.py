@@ -1,5 +1,5 @@
 # IMPORTANDO TODOS LOS COMPONENTES GRAFICOS PARA LA INTERFAZ
-import sys
+#import sys
 import kivy 
 import csv
 from decimal import Decimal
@@ -13,7 +13,6 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
 from kivy.uix.popup import Popup
 
-sys.setrecursionlimit(5000)
 # IMPORTANDO SYMPY
 from sympy import Derivative, diff, simplify, Symbol, Eq, solve, im, sympify, N
 from sympy.interactive import printing
@@ -24,7 +23,7 @@ import matplotlib.pyplot as plt
 from numpy import linspace, arange, zeros
 # CONFIGURANDO EL TAMAÑO DE LA VENTANA
 Config.set('graphics', 'width', '400') # Configurando el ancho
-Config.set('graphics', 'height', '400') # Configurando el ancho
+Config.set('graphics', 'height', '400') # Configurando el alto
 Config.write()
 
 # AGREGANDO LOS COMPONENTES GRAFICOS A LA INTERFAZ
@@ -216,6 +215,7 @@ class Interfaz(FloatLayout):
 
 class Mensaje(Popup):
     pass
+
 class Pinf(App):
     def build(self):
         return Interfaz()
